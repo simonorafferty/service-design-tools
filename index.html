@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Tools Library — Tailte Éireann</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:  #0f3d28;
+    --green-mid:   #1e6b45;
+    --green-light: #2f9461;
+    --green-pale:  #e4f2eb;
+    --green-mist:  #f2f9f5;
+    --gold:        #c8a84b;
+    --gold-bg:     #fdf6e3;
+    --white:       #ffffff;
+    --text-dark:   #0f1c16;
+    --text-mid:    #3d5449;
+    --text-light:  #7a9b8a;
+    --border:      #d0e6da;
+    --shadow:      0 2px 10px rgba(15,61,40,0.08);
+    --radius:      10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--green-mist); color: var(--text-dark); min-height: 100vh; }
+
+  /* HEADER */
+  header { background: var(--green-deep); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; border-bottom: 3px solid var(--gold); }
+  .logo-area { display: flex; align-items: center; gap: 14px; }
+  .logo-mark { width: 40px; height: 40px; flex-shrink: 0; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 18px; color: var(--green-deep); }
+  .logo-text { color: white; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; line-height: 1.2; }
+  .logo-text span { display: block; font-family: 'DM Sans', sans-serif; font-size: 0.68rem; font-weight: 400; color: rgba(255,255,255,0.6); letter-spacing: 0.1em; text-transform: uppercase; }
+  header nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; margin-left: 1.5rem; transition: color 0.2s; }
+  header nav a:hover { color: white; }
+
+  /* HERO */
+  .hero { background: var(--green-deep); padding: 3rem 2rem 2.5rem; border-bottom: 1px solid rgba(200,168,75,0.3); }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-badge { display: inline-block; background: var(--gold-bg); border: 1px solid var(--gold); color: #8a6a10; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 1rem; font-weight: 600; }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; color: white; line-height: 1.15; margin-bottom: 0.75rem; }
+  .hero p { color: rgba(255,255,255,0.65); font-size: 0.95rem; max-width: 540px; line-height: 1.65; margin-bottom: 1.5rem; }
+  .hero-bottom { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+  .btn-primary { background: var(--gold); color: var(--green-deep); border: none; padding: 10px 22px; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; letter-spacing: 0.02em; transition: background 0.2s; }
+  .btn-primary:hover { background: #d4b45c; }
+  .hero-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .hero-stat { color: rgba(255,255,255,0.55); font-size: 0.8rem; }
+  .hero-stat strong { color: rgba(255,255,255,0.9); }
+
+  /* LAYOUT */
+  .main-container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 250px 1fr; gap: 1.5rem; align-items: start; }
+
+  /* SIDEBAR */
+  .sidebar { position: sticky; top: 1.5rem; }
+  .sidebar-card { background: white; border-radius: var(--radius); padding: 1.1rem 1.2rem; border: 1px solid var(--border); margin-bottom: 0.9rem; box-shadow: var(--shadow); }
+  .sidebar-card h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .search-box { width: 100%; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--text-dark); background: var(--green-mist); outline: none; transition: border-color 0.2s; }
+  .search-box:focus { border-color: var(--green-mid); background: white; }
+  .filter-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip { padding: 4px 10px; border-radius: 20px; font-size: 0.73rem; font-weight: 500; border: 1.5px solid var(--border); background: white; color: var(--text-mid); cursor: pointer; transition: all 0.15s; line-height: 1.4; }
+  .chip:hover { border-color: var(--green-light); color: var(--green-mid); }
+  .chip.active { background: var(--green-mid); border-color: var(--green-mid); color: white; }
+  .chip.all.active { background: var(--green-deep); border-color: var(--green-deep); }
+  .clear-btn { width: 100%; padding: 8px; background: none; border: 1.5px solid var(--border); border-radius: 6px; color: var(--text-mid); font-size: 0.8rem; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .clear-btn:hover { border-color: var(--green-mid); color: var(--green-mid); }
+
+  /* TOOLS */
+  .tools-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .tools-count { font-size: 0.83rem; color: var(--text-light); }
+  .tools-count strong { color: var(--text-dark); }
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1rem; }
+
+  .tool-card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 1.2rem; box-shadow: var(--shadow); cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s; }
+  .tool-card:hover { box-shadow: 0 6px 20px rgba(15,61,40,0.13); border-color: var(--green-light); transform: translateY(-2px); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.65rem; gap: 8px; }
+  .card-icon { width: 36px; height: 36px; flex-shrink: 0; background: var(--green-pale); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .card-badges { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+  .badge-stage { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--green-mid); background: var(--green-pale); padding: 3px 7px; border-radius: 4px; }
+  .badge-enhanced { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.05em; color: #8a6a10; background: var(--gold-bg); border: 1px solid rgba(200,168,75,0.5); padding: 3px 7px; border-radius: 4px; }
+  .tool-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: var(--green-deep); margin-bottom: 0.35rem; line-height: 1.25; }
+  .tool-card p { font-size: 0.81rem; color: var(--text-mid); line-height: 1.55; margin-bottom: 0.85rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-size: 0.68rem; color: var(--text-light); background: var(--green-mist); border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px; }
+  .no-results { grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-light); font-size: 0.9rem; }
+  .no-results span { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+
+  /* MODALS */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,28,22,0.55); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 14px; padding: 2rem; width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; box-shadow: 0 16px 48px rgba(15,61,40,0.2); border-top: 4px solid var(--gold); }
+  .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; gap: 1rem; }
+  .modal-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-weight: 600; color: var(--green-deep); line-height: 1.2; }
+  .modal-close { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-light); flex-shrink: 0; padding: 2px 6px; border-radius: 4px; transition: color 0.15s; }
+  .modal-close:hover { color: var(--text-dark); }
+
+  .detail-meta { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .detail-badge { font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; font-weight: 500; }
+  .db-stage   { background: var(--green-pale); color: var(--green-mid); }
+  .db-who     { background: #e8f0fe; color: #3a5cbf; }
+  .db-what    { background: #fef3e2; color: #8a5000; }
+  .db-how     { background: #f3e8ff; color: #6b21a8; }
+  .db-enhanced { background: var(--gold-bg); color: #8a6a10; border: 1px solid rgba(200,168,75,0.4); }
+  .detail-desc { font-size: 0.9rem; line-height: 1.65; color: var(--text-mid); margin-bottom: 0.75rem; }
+  .detail-section { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; color: var(--green-deep); margin: 1rem 0 0.4rem; }
+  .alias-text { font-size: 0.82rem; color: var(--text-light); background: var(--green-mist); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; line-height: 1.5; }
+
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; font-size: 0.73rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.3rem; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.87rem; color: var(--text-dark); background: var(--green-mist); outline: none; transition: border-color 0.2s, background 0.2s; }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--green-mid); background: white; }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .btn-cancel { padding: 9px 20px; background: none; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--text-mid); cursor: pointer; transition: all 0.15s; }
+  .btn-cancel:hover { border-color: var(--text-mid); }
+
+  footer { background: var(--green-deep); color: rgba(255,255,255,0.5); text-align: center; padding: 1.5rem; font-size: 0.78rem; margin-top: 3rem; border-top: 3px solid var(--gold); }
+  footer strong { color: rgba(255,255,255,0.8); }
+
+  @media (max-width: 768px) {
+    .main-container { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    header nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <div class="logo-mark">TÉ</div>
+    <div class="logo-text">Tailte Éireann<span>Design Tools Library</span></div>
+  </div>
+  <nav><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></nav>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Internal Resource</div>
+    <h1>Design Methods<br>&amp; Tools Library</h1>
+    <p>A curated collection of service design tools and methods to support Tailte Éireann's design and improvement processes.</p>
+    <div class="hero-bottom">
+      <button class="btn-primary" onclick="openAddModal()">+ Add a Tool</button>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong id="heroCount">47</strong> tools</div>
+        <div class="hero-stat"><strong>5</strong> design stages</div>
+        <div class="hero-stat"><strong>4</strong> audiences</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container">
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <h3>Search</h3>
+      <input class="search-box" type="text" id="searchInput" placeholder="Search tools or aliases…" oninput="applyFilters()">
+    </div>
+    <div class="sidebar-card"><h3>Stage (When)</h3><div class="filter-chips" id="stageFilters"></div></div>
+    <div class="sidebar-card"><h3>Audience (Who)</h3><div class="filter-chips" id="whoFilters"></div></div>
+    <div class="sidebar-card"><h3>Aspect (What)</h3><div class="filter-chips" id="whatFilters"></div></div>
+    <div class="sidebar-card"><h3>Format (How)</h3><div class="filter-chips" id="howFilters"></div></div>
+    <button class="clear-btn" onclick="clearFilters()">✕ Clear all filters</button>
+  </aside>
+
+  <main>
+    <div class="tools-header">
+      <div class="tools-count" id="toolsCount">Showing <strong>0</strong> tools</div>
+    </div>
+    <div class="tools-grid" id="toolsGrid"></div>
+  </main>
+</div>
+
+<footer><strong>Tailte Éireann</strong> &nbsp;—&nbsp; Design Tools Library &nbsp;|&nbsp; Internal Use Only &nbsp;|&nbsp; Smithfield Hall, Dublin 7</footer>
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header"><h2>Add a New Tool</h2><button class="modal-close" onclick="closeAddModal()">✕</button></div>
+    <div class="form-group"><label>Tool Name *</label><input type="text" id="newName" placeholder="e.g. Customer Journey Map"></div>
+    <div class="form-group"><label>Description *</label><textarea id="newDesc" placeholder="What is this tool and what does it help with?"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Stage (When) *</label><select id="newStage"><option value="">Select…</option><option>Evaluation</option><option>Ideation</option><option>Implementation</option><option>Prototyping</option><option>Research</option></select></div>
+      <div class="form-group"><label>Audience (Who) *</label><select id="newWho"><option value="">Select…</option><option>Experts</option><option>Service Staff</option><option>Stakeholders</option><option>Users</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Aspect (What)</label><select id="newWhat"><option value="">Select…</option><option>Context</option><option>Experience</option><option>Offering</option><option>System</option></select></div>
+      <div class="form-group"><label>Format (How)</label><select id="newHow"><option value="">Select…</option><option>Map</option><option>Narrative</option><option>Simulation</option><option>Text</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Also Called / Aliases</label><input type="text" id="newAliases" placeholder="e.g. Journey Map; User Map"></div>
+      <div class="form-group"><label>Enhanced Tool?</label><select id="newEnhanced"><option value="No">No</option><option value="Yes">Yes — AI-powered</option></select></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+      <button class="btn-primary" onclick="addTool()">Add Tool</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header"><h2 id="detailTitle">—</h2><button class="modal-close" onclick="closeDetailModal()">✕</button></div>
+    <div id="detailBody"></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeDetailModal()">Close</button></div>
+  </div>
+</div>
+
+<script>
+const fmtIcons = { 'Map':'🗺️','Narrative':'📖','Simulation':'🎭','Text':'📝' };
+function icon(how){ return fmtIcons[(how||'').split(';')[0].trim()] || '🛠️'; }
+
+let tools = [
+  {name:"AI Functionalities Cards",stage:"Ideation",who:"Experts; Service Staff; Stakeholders",what:"Experience; Offering",how:"Text",enhanced:"Yes",aliases:"",description:"Get inspired by existing technologies to ideate service operations and experience improvements."},
+  {name:"AI Landscape",stage:"Ideation",who:"Experts; Service Staff; Stakeholders",what:"Offering; System",how:"Map",enhanced:"Yes",aliases:"",description:"Ideate a broad variety of possibilities for AI implementations in a given service."},
+  {name:"Behaviour Change Wheel",stage:"Ideation",who:"Experts; Stakeholders",what:"Context",how:"Text",enhanced:"Yes",aliases:"Hypothesis Generation; Behavioural Wheel",description:"Explore blockers that prevent a desired behaviour change to identify design interventions."},
+  {name:"Brainstorming",stage:"Ideation",who:"Experts; Service Staff; Stakeholders; Users",what:"Context; Experience",how:"Text",enhanced:"No",aliases:"Idea generation",description:"First diverge and generate as many ideas as possible, then converge around solid concepts."},
+  {name:"Business Model Canvas",stage:"Implementation",who:"Experts; Stakeholders",what:"Offering",how:"Text",enhanced:"No",aliases:"Product/Market Fit",description:"Plan and understand in advance the business model and constraints of the service you are designing."},
+  {name:"Card Sorting",stage:"Ideation; Research",who:"Experts; Service Staff; Stakeholders; Users",what:"Experience; Offering; System",how:"Text",enhanced:"No",aliases:"Cluster analysis; Service taxonomy",description:"Organize content in a way that suits users' mental models."},
+  {name:"Concept Walkthrough",stage:"Ideation; Prototyping",who:"Service Staff; Users",what:"Experience",how:"Simulation",enhanced:"No",aliases:"Concept Critique; Concept Cards; Idea Validation",description:"Show a service idea to potential users or providers through a step-by-step imaginary tour."},
+  {name:"Diary Study",stage:"Research",who:"Service Staff; Users",what:"Context",how:"Narrative",enhanced:"No",aliases:"Cultural Probes",description:"Collect deep insights by asking users or employees to track and observe behaviours over time."},
+  {name:"Dynamic Personas",stage:"Ideation",who:"Experts; Stakeholders",what:"Context",how:"Narrative",enhanced:"Yes",aliases:"Personas; Human archetypes",description:"Focus on possible evolution of user behaviour to identify opportunities that could support their transition."},
+  {name:"Ecosystem Loops",stage:"Ideation; Implementation; Research",who:"Experts; Stakeholders",what:"Context; System",how:"Map; Narrative",enhanced:"Yes",aliases:"System Maps",description:"Describe a system in its entire complexity by visualizing flows and relationships."},
+  {name:"Ecosystem Map",stage:"Research",who:"Experts; Stakeholders",what:"System",how:"Map",enhanced:"No",aliases:"Actors Map; Ecology Map",description:"Describe all the entities, flows and relationships that characterize the surrounding ecosystem."},
+  {name:"Emotional Journey",stage:"Research",who:"Service Staff; Users",what:"Experience",how:"Map",enhanced:"No",aliases:"Journey Map",description:"Analyse how user perception changes throughout a service experience."},
+  {name:"Empathy Map",stage:"Research",who:"Stakeholders",what:"Context",how:"Text",enhanced:"No",aliases:"Proto-Personas",description:"Share key assumptions around user attitudes and behaviors."},
+  {name:"Evaluation Matrix",stage:"Ideation",who:"Stakeholders",what:"Offering",how:"Map",enhanced:"No",aliases:"How-Now-Wow Matrix; Dot Voting",description:"Prioritize ideas based on the most relevant success criteria for the project."},
+  {name:"Experience Principles",stage:"Ideation",who:"Service Staff; Stakeholders",what:"Experience; Offering",how:"Text",enhanced:"No",aliases:"Design Principles; Experience Pillars",description:"Identify a set of guiding principles to inspire the design of a specific service experience."},
+  {name:"Experience Prototypes",stage:"Prototyping",who:"Service Staff; Stakeholders; Users",what:"Experience",how:"Simulation",enhanced:"No",aliases:"Low-Fi Prototypes; Mock-ups",description:"Simulate the service experience by prototyping one or more touchpoints."},
+  {name:"Future Backcasting",stage:"Ideation; Implementation; Research",who:"Experts; Service Staff; Stakeholders; Users",what:"Context",how:"Narrative",enhanced:"Yes",aliases:"Dynamic Personas; Impact Journey; Service Roadmap",description:"From the future to the present — understand how today's actions affect tomorrow."},
+  {name:"Hypothesis Generation",stage:"Ideation",who:"Stakeholders",what:"Context",how:"Text",enhanced:"No",aliases:"How might we...",description:"Write down all hypotheses and assumptions as a starting point for the project."},
+  {name:"Impact Journey",stage:"Ideation; Implementation",who:"Experts; Stakeholders",what:"Offering; System",how:"Map",enhanced:"Yes",aliases:"User journeys",description:"Analyse the impact of a specific service experience, and generate ideas to make it more sustainable."},
+  {name:"Interview Guide",stage:"Research",who:"Experts; Service Staff; Stakeholders; Users",what:"Context",how:"Text",enhanced:"No",aliases:"Research Questions; Discussion Guide",description:"Get ready for user research by listing all the questions you want to ask."},
+  {name:"Issue Cards",stage:"Evaluation; Ideation",who:"Experts; Stakeholders",what:"Experience; Offering",how:"Text",enhanced:"No",aliases:"",description:"Collect and share critical issues emerging from research or prototyping sessions."},
+  {name:"Journey Map",stage:"Research",who:"Experts; Stakeholders",what:"Experience",how:"Map",enhanced:"No",aliases:"User Journey; Customer Journey; Experience Journey",description:"Describe how the user interacts with the service, throughout its touchpoints."},
+  {name:"Mindmap",stage:"Ideation",who:"Experts; Stakeholders",what:"Context; System",how:"Map",enhanced:"No",aliases:"",description:"Explore relationships between ideas, starting from a central concept."},
+  {name:"Observation Notes",stage:"Research",who:"Service Staff; Users",what:"Context; Experience",how:"Text",enhanced:"No",aliases:"Field Notes",description:"Capture qualitative data during contextual research and user observation."},
+  {name:"Offering Map",stage:"Ideation; Implementation",who:"Experts; Stakeholders",what:"Offering; System",how:"Map",enhanced:"No",aliases:"",description:"Describe the service and its value proposition across multiple touchpoints."},
+  {name:"Personas",stage:"Research",who:"Experts; Stakeholders",what:"Context",how:"Narrative",enhanced:"No",aliases:"User Archetypes; Profiles",description:"Build a shared understanding of key user groups to inform design decisions."},
+  {name:"Recruiting Screener",stage:"Research",who:"Experts",what:"Context",how:"Text",enhanced:"No",aliases:"Screener Survey",description:"Select the right participants for qualitative research sessions."},
+  {name:"Research Plan",stage:"Research",who:"Experts; Stakeholders",what:"Context",how:"Text",enhanced:"No",aliases:"Research Brief",description:"Define the scope, goals and methods for a research phase."},
+  {name:"Role Playing",stage:"Prototyping",who:"Service Staff; Stakeholders; Users",what:"Experience",how:"Simulation",enhanced:"No",aliases:"Service Enactment; Bodystorming",description:"Simulate the service experience by acting out the roles of different actors."},
+  {name:"Rough Prototyping",stage:"Prototyping",who:"Service Staff; Users",what:"Experience; Offering",how:"Simulation",enhanced:"No",aliases:"Paper Prototyping; Sketch Prototyping",description:"Build quick, low-fidelity representations of ideas to test them early."},
+  {name:"Service Blueprint",stage:"Implementation",who:"Experts; Service Staff; Stakeholders",what:"Experience; System",how:"Map",enhanced:"No",aliases:"Blueprint; Process Map",description:"Map all the components of a service, including frontstage and backstage activities."},
+  {name:"Service Image",stage:"Ideation",who:"Stakeholders",what:"Experience; Offering",how:"Narrative",enhanced:"No",aliases:"Service Vision; Concept Poster",description:"Communicate a service concept through a compelling visual representation."},
+  {name:"Service Prototype",stage:"Prototyping",who:"Service Staff; Stakeholders; Users",what:"Experience; System",how:"Simulation",enhanced:"No",aliases:"Service Pilot; Live Prototype",description:"Test the service experience with real or simulated components across touchpoints."},
+  {name:"Service Roadmap",stage:"Implementation",who:"Experts; Stakeholders",what:"Offering; System",how:"Map",enhanced:"No",aliases:"Implementation Plan; Rollout Plan",description:"Plan the implementation of a service over time, organizing actions and milestones."},
+  {name:"Service Safari",stage:"Research",who:"Experts; Service Staff; Users",what:"Context; Experience",how:"Narrative",enhanced:"No",aliases:"Benchmarking; Competitor Analysis",description:"Experience and evaluate existing services from the user perspective."},
+  {name:"Service Specifications",stage:"Implementation",who:"Experts; Service Staff",what:"Offering; System",how:"Text",enhanced:"No",aliases:"Design Guidelines; Service Manual",description:"Define the details of the service, describing what needs to be built and how."},
+  {name:"Signal Cards",stage:"Research",who:"Experts; Stakeholders",what:"Context; System",how:"Text",enhanced:"Yes",aliases:"Trend Cards; STEEP",description:"Identify and discuss weak signals and emerging trends affecting the service context."},
+  {name:"Stakeholders Map",stage:"Research",who:"Experts; Stakeholders",what:"System",how:"Map",enhanced:"No",aliases:"Power/Interest Grid",description:"Identify and analyse all the actors involved in or affected by the service."},
+  {name:"Success Metrics",stage:"Evaluation",who:"Experts; Stakeholders",what:"Offering; System",how:"Text",enhanced:"No",aliases:"KPIs; OKRs; Design Metrics",description:"Define the indicators to evaluate the success of a service over time."},
+  {name:"Synthesis Wall",stage:"Ideation; Research",who:"Experts; Stakeholders",what:"Context",how:"Map",enhanced:"No",aliases:"Affinity Diagram; Clustering",description:"Organise and synthesise research data to identify patterns and insights."},
+  {name:"System Map",stage:"Ideation; Research",who:"Experts; Stakeholders",what:"System",how:"Map",enhanced:"No",aliases:"Causal Loop Diagram",description:"Represent the elements and relationships that compose a complex system."},
+  {name:"System Scenario",stage:"Ideation; Implementation",who:"Experts; Stakeholders",what:"Offering; System",how:"Narrative",enhanced:"Yes",aliases:"",description:"Describe how a future service system could work, combining actors, processes and technologies."},
+  {name:"Tomorrow's Narratives",stage:"Ideation",who:"Experts; Stakeholders",what:"Experience; Offering",how:"Narrative",enhanced:"No",aliases:"Future Scenarios; Speculative Design",description:"Imagine future service scenarios to inspire radical innovation."},
+  {name:"Transition Journey",stage:"Ideation; Implementation",who:"Experts; Stakeholders; Users",what:"Context; Experience",how:"Map",enhanced:"Yes",aliases:"Behaviour Change Journey",description:"Map the journey of a user transitioning from one behaviour or state to another."},
+  {name:"User Scenarios",stage:"Ideation",who:"Service Staff; Users",what:"Experience",how:"Narrative",enhanced:"No",aliases:"Use Cases; Storyboards",description:"Describe how a specific user could interact with a service in a realistic context."},
+  {name:"User Stories",stage:"Ideation; Implementation",who:"Experts; Service Staff",what:"Offering; System",how:"Text",enhanced:"No",aliases:"Job Stories; Feature Cards",description:"Describe service features from the user's point of view to guide development."},
+  {name:"Value Proposition Canvas",stage:"Ideation; Implementation",who:"Experts; Stakeholders",what:"Offering",how:"Text",enhanced:"No",aliases:"Value Canvas",description:"Understand how a service creates value by matching user needs with service features."}
+];
+
+let active = {stage:'All',who:'All',what:'All',how:'All'};
+
+function split(s){ return s ? s.split(';').map(x=>x.trim()).filter(Boolean) : []; }
+function uniq(key){ const s=new Set(); tools.forEach(t=>split(t[key]).forEach(v=>s.add(v))); return ['All',...[...s].sort()]; }
+function matches(val,f){ return f==='All' || split(val).includes(f); }
+
+function buildFilters(){
+  build('stageFilters',uniq('stage'),'stage');
+  build('whoFilters',  uniq('who'),  'who');
+  build('whatFilters', uniq('what'), 'what');
+  build('howFilters',  uniq('how'),  'how');
+}
+function build(id,vals,key){
+  const el=document.getElementById(id); el.innerHTML='';
+  vals.forEach(v=>{
+    const b=document.createElement('button');
+    b.className=`chip${v==='All'?' all':''}${active[key]===v?' active':''}`;
+    b.textContent=v;
+    b.onclick=()=>{active[key]=v;buildFilters();applyFilters();};
+    el.appendChild(b);
+  });
+}
+
+function applyFilters(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const f=tools.filter(t=>
+    matches(t.stage,active.stage)&&matches(t.who,active.who)&&
+    matches(t.what,active.what)&&matches(t.how,active.how)&&
+    (!q||t.name.toLowerCase().includes(q)||t.description.toLowerCase().includes(q)||(t.aliases||'').toLowerCase().includes(q))
+  );
+  render(f);
+}
+function clearFilters(){active={stage:'All',who:'All',what:'All',how:'All'};document.getElementById('searchInput').value='';buildFilters();render(tools);}
+
+function render(list){
+  document.getElementById('toolsCount').innerHTML=`Showing <strong>${list.length}</strong> of ${tools.length} tools`;
+  const g=document.getElementById('toolsGrid'); g.innerHTML='';
+  if(!list.length){g.innerHTML=`<div class="no-results"><span>🔍</span>No tools match your filters.</div>`;return;}
+  list.forEach(t=>{
+    const c=document.createElement('div'); c.className='tool-card';
+    const ps=split(t.stage)[0]||t.stage;
+    c.innerHTML=`
+      <div class="card-top">
+        <div class="card-icon">${icon(t.how)}</div>
+        <div class="card-badges">
+          ${t.enhanced==='Yes'?'<span class="badge-enhanced">✦ Enhanced</span>':''}
+          <span class="badge-stage">${ps}</span>
+        </div>
+      </div>
+      <h4>${t.name}</h4>
+      <p>${t.description}</p>
+      <div class="card-tags">
+        ${t.how?`<span class="tag">${t.how}</span>`:''}
+        ${split(t.what).map(w=>`<span class="tag">${w}</span>`).join('')}
+      </div>`;
+    c.onclick=()=>openDetail(t);
+    g.appendChild(c);
+  });
+}
+
+function openDetail(t){
+  document.getElementById('detailTitle').textContent=`${icon(t.how)} ${t.name}`;
+  document.getElementById('detailBody').innerHTML=`
+    <div class="detail-meta">
+      ${split(t.stage).map(s=>`<span class="detail-badge db-stage">📍 ${s}</span>`).join('')}
+      ${split(t.who).map(w=>`<span class="detail-badge db-who">👥 ${w}</span>`).join('')}
+      ${split(t.what).map(w=>`<span class="detail-badge db-what">◈ ${w}</span>`).join('')}
+      ${t.how?`<span class="detail-badge db-how">◻ ${t.how}</span>`:''}
+      ${t.enhanced==='Yes'?'<span class="detail-badge db-enhanced">✦ Enhanced Tool</span>':''}
+    </div>
+    <p class="detail-desc">${t.description}</p>
+    ${t.aliases?`<div class="detail-section">Also called</div><div class="alias-text">${t.aliases}</div>`:''}`;
+  document.getElementById('detailModal').classList.add('open');
+}
+function closeDetailModal(){document.getElementById('detailModal').classList.remove('open');}
+
+function openAddModal(){document.getElementById('addModal').classList.add('open');}
+function closeAddModal(){
+  document.getElementById('addModal').classList.remove('open');
+  ['newName','newDesc','newStage','newWho','newWhat','newHow','newAliases'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('newEnhanced').value='No';
+}
+function addTool(){
+  const name=document.getElementById('newName').value.trim();
+  const desc=document.getElementById('newDesc').value.trim();
+  const stage=document.getElementById('newStage').value;
+  const who=document.getElementById('newWho').value;
+  if(!name||!desc||!stage||!who){alert('Please fill in all required fields (*)');return;}
+  tools.push({name,description:desc,stage,who,what:document.getElementById('newWhat').value,how:document.getElementById('newHow').value,aliases:document.getElementById('newAliases').value.trim(),enhanced:document.getElementById('newEnhanced').value});
+  closeAddModal();buildFilters();applyFilters();
+  document.getElementById('heroCount').textContent=tools.length;
+}
+
+['addModal','detailModal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{if(e.target===e.currentTarget){id==='addModal'?closeAddModal():closeDetailModal();}});
+});
+
+buildFilters(); render(tools);
+</script>
+</body>
+</html>
